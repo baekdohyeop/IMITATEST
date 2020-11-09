@@ -1,0 +1,150 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='/assets/img/apple-icon.png')
+    link(rel='icon', type='image/png', href='/assets/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+      | IMITATEST | TEST
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no', name='viewport')
+    // Fonts and icons
+    link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+    // CSS Files
+    link(href='/assets/css/material-kit.css?v=2.0.5', rel='stylesheet')
+  body.index-page
+    nav#sectionsNav.navbar.navbar-transparent.navbar-color-on-scroll.fixed-top.navbar-expand-lg(color-on-scroll='100')
+      .container
+        .navbar-translate
+          a.navbar-brand(href='/')
+            strong IMITATEST
+          button.navbar-toggler(type='button', data-toggle='collapse', aria-expanded='false', aria-label='Toggle navigation')
+            span.sr-only Toggle navigation
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+        .collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href='/problem')
+                | PROBLEM
+            li.nav-item
+              a.nav-link(href='/test')
+                | TEST
+            li.nav-item
+              a.nav-link(href='/rank')
+                | RANKING
+            li.nav-item
+              a.nav-link(href='/curriculum')
+                | CURRICULUM
+            if context.login
+              li.nav-item
+                a.nav-link(href='/profile')
+                  | PROFILE
+              li.nav-item
+                a.nav-link(href='/logout')
+                  | LOGOUT
+            else
+              li.nav-item
+                a.nav-link(href='/login')
+                  | LOGIN
+    .page-header.header-filter(data-parallax='true', style="background-image: url('/assets/img/problem_page_library.jpg'); height:300px;")
+      .container
+        .row
+          .col-md-8.ml-auto.mr-auto
+            .brand
+              h1(style='font-size:50px;') TEST
+    .main.main-raised
+      .section
+        .container
+          .row
+            -for(var i = 0; i < context.tests.length; i++){
+              -var difficulty = (context.tests[i].difficulty.calculus + context.tests[i].difficulty.geometry_and_vector + context.tests[i].difficulty.probability_and_statistic)/3;
+              -difficulty = difficulty.toFixed(1);
+              .col-md-4
+                .card.card-blog
+                  .card-header.card-header-image
+                    a(href='/test/#{context.tests[i]._id}')
+                      if context.tests[i].test_img_path
+                        img.img(src="#{context.tests[i].test_img_path}")
+                      else
+                        img.img(src='/assets/img/mockexam.jpg')
+                  .card-body
+                    h4.card-title
+                      a(href='/test/#{context.tests[i]._id}') 
+                        if context.tests[i].title 
+                          span #{context.tests[i].title}
+                        else
+                          span 제목없음
+                  .card-footer
+                    .author
+                      a(href='javascript:void(0)')
+                        img.avatar.img-raised(src='/assets/img/profile.png', alt='...')
+                        if context.tests[i].author
+                          span #{context.tests[i].author}
+                        else
+                          span 작자 미상
+                    .stats.ml-auto
+                      i.material-icons favorite
+                      |  #{context.tests[i].like_count}
+                      i.material-icons battery_charging_full
+                      | #{difficulty}
+              -}
+          .pagenation
+            ul.pagination.pagination-info.justify-content-center
+              // color-classes: "pagination-primary", "pagination-info", "pagination-success", "pagination-warning", "pagination-danger"
+              form(action='/test' method='POST' name="page_form")
+                input(type="hidden" name="page")
+              if parseInt(context.page/5)*5 - 1 <= 0
+                li.page-item
+                  a.page-link(href='javascript:void(0);') prev
+              else
+                li.page-item
+                  a.page-link(href='javascript:click_page(#{parseInt(context.page/5)*5 - 1});') prev
+              -for(var i = 0; i < context.pagecount; i++){
+                if i == context.page
+                  li.active.page-item
+                    a.page-link(href='javascript:void(0)') #{i+1}
+                else
+                  if ( parseInt(context.page/5)*5 <= i && i < parseInt(context.page/5)*5 + 5)
+                    li.page-item
+                      a.page-link(href='javascript:click_page(#{i});') #{i+1}
+              -}
+              if parseInt(context.page/5)*5 + 5 >= context.pagecount
+                li.page-item
+                  a.page-link(href='javascript:void(0);') next
+              else
+                li.page-item
+                  a.page-link(href='javascript:click_page(#{parseInt(context.page/5)*5 + 5});') next
+              script.
+                function click_page(click){
+                  var form = document.page_form;
+                  form.page.value = click;
+                  form.action = "/test";
+                  form.method = "POST";
+                  form.submit();
+                }
+    footer.footer(data-background-color='black')
+      .container
+        nav.float-left
+          ul
+            li
+              a(href='/')
+                | IMITATEST
+        .copyright.float-right
+          | © IMITATEST
+          script.
+            document.write(new Date().getFullYear())
+          |  All Right Reserved
+    // Core JS Files
+    script(src='/assets/js/core/jquery.min.js', type='text/javascript')
+    script(src='/assets/js/core/popper.min.js', type='text/javascript')
+    script(src='/assets/js/core/bootstrap-material-design.min.js', type='text/javascript')
+    script(src='/assets/js/plugins/moment.min.js')
+    // Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker
+    script(src='/assets/js/plugins/bootstrap-datetimepicker.js', type='text/javascript')
+    // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
+    script(src='/assets/js/plugins/nouislider.min.js', type='text/javascript')
+    // Control Center for Material Kit: parallax effects, scripts for the example pages etc
+    script(src='/assets/js/material-kit.js?v=2.0.5', type='text/javascript')

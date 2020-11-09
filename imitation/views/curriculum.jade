@@ -1,0 +1,245 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='/assets/img/apple-icon.png')
+    link(rel='icon', type='image/png', href='/assets/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+      | IMITATEST | CURRICULUM
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no', name='viewport')
+    // Fonts and icons
+    link(rel='stylesheet', type='text/css', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css')
+    // CSS Files
+    link(href='/assets/css/material-kit.css?v=2.0.5', rel='stylesheet')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/assets/owl.carousel.min.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Roboto:400,700')
+    link(rel='stylesheet', href='/carousel/css/style.css')
+    script.
+      var level_calculus = !{JSON.stringify(context.user.level.calculus)};
+      var level_geometry_and_vector = !{JSON.stringify(context.user.level.geometry_and_vector)}; 
+      var level_probability_and_statistic = !{JSON.stringify(context.user.level.probability_and_statistic)};
+      
+  body.index-page
+    nav#sectionsNav.navbar.navbar-transparent.navbar-color-on-scroll.fixed-top.navbar-expand-lg(color-on-scroll='100')
+      .container
+        .navbar-translate
+          a.navbar-brand(href='/')
+            strong IMITATEST
+          button.navbar-toggler(type='button', data-toggle='collapse', aria-expanded='false', aria-label='Toggle navigation')
+            span.sr-only Toggle navigation
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+        .collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href='/problem')
+                | PROBLEM
+            li.nav-item
+              a.nav-link(href='/test')
+                | TEST
+            li.nav-item
+              a.nav-link(href='/rank')
+                | RANKING
+            li.nav-item
+              a.nav-link(href='/curriculum')
+                | CURRICULUM
+            if context.login
+              li.nav-item
+                a.nav-link(href='/profile')
+                  | PROFILE
+              li.nav-item
+                a.nav-link(href='/logout')
+                  | LOGOUT
+            else
+              li.nav-item
+                a.nav-link(href='/login')
+                  | LOGIN
+    .page-header.header-filter(data-parallax='true', style="background-image: url('/assets/img/problem_page_library.jpg'); height:300px;")
+      .container
+        .row
+          .col-md-8.ml-auto.mr-auto
+            .brand
+              h1(style='font-size:50px;') CURRICULUM
+    .main.main-raised
+      .section
+        .container(style="height:500px; text-align:center;")
+          if context.curriculum.length
+            .mhn-slide.owl-carousel(style="top:50%; transform:translateY(-50%)")
+              -for(var i = 0; i < context.curriculum.length; i++){
+                if context.curriculum[i].custom == true
+                  .mhn-item
+                    .mhn-inner
+                      img(src='/assets/img/cover.png')
+                      .mhn-img
+                        .loader-circle
+                          .loader-stroke-left
+                          .loader-stroke-right
+                      .mhn-text
+                        h4 
+                          a(href="/custom/#{context.curriculum[i].difficulty}" style="color:black;") Custom
+                        p #{i+1}
+                else
+                  .mhn-item
+                    .mhn-inner
+                      img(src='#{context.curriculum[i].test.test_img_path}')
+                      .mhn-img
+                        .loader-circle
+                          .loader-stroke-left
+                          .loader-stroke-right
+                      .mhn-text
+                        h4 
+                          a(href="/test/#{context.curriculum[i].test._id}" style="color:black;") #{context.curriculum[i].test.title}
+                        p #{i+1}
+              -}
+          else
+            .col-md-12(style="top:192.5px;")
+              div
+                h2 
+                  i.material-icons(style='color:#00bcd4;') mood_bad
+                  | &nbsp;The curriculum has not yet created
+                button.btn.btn-info.btn-round(type='button', data-toggle='modal', data-target='#inputModal')
+                  | Create
+
+    footer.footer(data-background-color='black')
+      .container
+        nav.float-left
+          ul
+            li
+              a(href='/')
+                | IMITATEST
+        .copyright.float-right
+          | © IMITATEST
+          script.
+            document.write(new Date().getFullYear())
+          |  All Right Reserved
+    // Modal
+    #inputModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='inputModalLabel', aria-hidden='true')
+      .modal-dialog.modal-lg(role='document')
+        .modal-content
+          if context.user.level.calculus === -1 || context.user.level.geometry_and_vector === -1 || context.user.level.probability_and_statistic === -1
+            .modal-header
+              h4#inputModalLabel.modal-title(style="margin-top:-2px;") CURRICULUM 
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body
+              .row.justify-content-center(style='padding-top:50px;padding-bottom:50px')
+                .col-md-10(style='vertical-align: middle;')
+                  div
+                    h3(style="text-align:center;")
+                      i.material-icons(style='color:#00bcd4;') error
+                      | 먼저 현재 수준을 입력해야합니다.
+                    p(style="text-align:center;")
+                      | 맞춤형 모의고사 커리큘럼을 제공하기 위해 현재 수준과 목표 수준 정보가 필요합니다.                  
+            .modal-footer
+              button.btn.btn-info.btn-round.pull-right(style='margin-left:10px;', onclick="location.href='/measurement'") 입력하러 가기
+          else
+            .modal-header
+              h4#inputModalLabel.modal-title(style="margin-top:-2px;") CURRICULUM 
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body
+              .row.justify-content-center
+                .col-md-10(style='vertical-align: middle;')
+                  h3(style="text-align:center;") 
+                    i.material-icons(style='color:#00bcd4;') assistant_photo
+                    | 목표 수준을 입력해주세요.
+                  p(style="text-align:center;") 모의고사 커리큘럼 제공을 위한 정보로 활용됩니다. :)<br>
+                    | 감이 안잡히시나요? &nbsp;
+                    b
+                      a(style="color:#3C4858;" href='#', data-toggle="tooltip" data-placement="bottom" data-html="true" title='3등급 : 6<br>2등급 : 7<br>1등급 : 8<br>96점 : 9<br>100점 : 10') 등급별 수준
+                    | 을 참고해보세요!
+                  form.form(method='POST', action='/curriculum/input', id="myForm")
+                    .card-body
+                      span.bmd-form-group
+                        .input-group.has-info.row
+                          .col-md-12(style="margin-bottom:-12px;")
+                            h6 미적분
+                              span#cal
+                          .col-md-12
+                            input.form-control(name = "goal_calculus", id="calculus", type='text', placeholder='#{context.user.level.calculus.toFixed(1)} 이상 10 이하의 값을 입력해주세요')
+                      span.bmd-form-group
+                        .input-group.has-info.row
+                          .col-md-12(style="margin-top:12px; margin-bottom:-12px;")
+                            h6 기하와 벡터
+                              span#geo
+                          .col-md-12
+                            input.form-control(name = "goal_geometry_and_vector",id="geometry_and_vector" type='text', placeholder='#{context.user.level.geometry_and_vector.toFixed(1)} 이상 10 이하의 값을 입력해주세요')
+                      span.bmd-form-group
+                        .input-group.has-info.row
+                          .col-md-12(style="margin-top:12px; margin-bottom:-12px;")
+                            h6 확률과 통계
+                              span#pro
+                          .col-md-12
+                            input.form-control(name="goal_probability_and_statistic", id="probability_and_statistic" type='text', placeholder='#{context.user.level.probability_and_statistic.toFixed(1)} 이상 10 이하의 값을 입력해주세요')
+                    input(type='submit', style='display:none')
+
+                    
+            .modal-footer
+              span(style="color:#f44336")#err
+              input.btn.btn-info.btn-round(type="button" value="제출" id="myButton")
+    // Core JS Files
+    script(src='/assets/js/core/jquery.min.js', type='text/javascript')
+    script(src='/assets/js/core/popper.min.js', type='text/javascript')
+    script(src='/assets/js/core/bootstrap-material-design.min.js', type='text/javascript')
+    script(src='/assets/js/plugins/moment.min.js')
+    // Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker
+    script(src='/assets/js/plugins/bootstrap-datetimepicker.js', type='text/javascript')
+    // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
+    script(src='/assets/js/plugins/nouislider.min.js', type='text/javascript')
+    // Control Center for Material Kit: parallax effects, scripts for the example pages etc
+    script(src='/assets/js/material-kit.js?v=2.0.5', type='text/javascript')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.2.1/owl.carousel.min.js')
+    script(src='/carousel/js/index.js')
+    script.
+      $("#myButton").click(function() {
+        if($("#cal i").text() == " check " && $("#geo i").text() ==" check " && $("#pro i").text() == " check ")  {
+          $("#myForm").submit();
+        } else{
+          $("#err").text("다시 입력해주세요");
+        }
+      });
+      
+      $("#calculus").keyup(function(){
+        var input = $("#calculus").val();
+
+        if(input.match(/^-{0,1}\d+$/) || input.match(/^\d+\.\d+$/)){
+          if(10 >= Number(input) && Number(input) >= level_calculus){
+            $("#cal").html(" <i class='material-icons', style='color:#4caf50; font-size:13px;'> check </i>");
+          } else {
+            $("#cal").html(" <i class='material-icons', style='color:#f44336; font-size:13px;'> close </i>");
+          }
+        } else{
+          $("#cal").html(" <i class='material-icons', style='color:#f44336; font-size:13px;'> close </i>");
+        }       
+      });
+
+      $("#geometry_and_vector").keyup(function(){
+        var input = $("#geometry_and_vector").val();
+
+        if(input.match(/^-{0,1}\d+$/) || input.match(/^\d+\.\d+$/)){
+          if(10 >= Number(input) && Number(input) >= level_geometry_and_vector){
+            $("#geo").html(" <i class='material-icons', style='color:#4caf50; font-size:13px;'> check </i>");
+          } else {
+            $("#geo").html(" <i class='material-icons', style='color:#f44336; font-size:13px;'> close </i>");
+          }
+        } else{
+          $("#geo").html(" <i class='material-icons', style='color:#f44336; font-size:13px;'> close </i>");
+        }       
+      });
+
+      $("#probability_and_statistic").keyup(function(){
+        var input = $("#probability_and_statistic").val();
+
+        if(input.match(/^-{0,1}\d+$/) || input.match(/^\d+\.\d+$/)){
+          if(10 >= Number(input) && Number(input) >= level_probability_and_statistic){
+            $("#pro").html(" <i class='material-icons', style='color:#4caf50; font-size:13px;'> check </i>");
+          } else {
+            $("#pro").html(" <i class='material-icons', style='color:#f44336; font-size:13px;'> close </i>");
+          }
+        } else{
+          $("#pro").html(" <i class='material-icons', style='color:#f44336; font-size:13px;'> close </i>");
+        }       
+      });

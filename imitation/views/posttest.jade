@@ -1,0 +1,18 @@
+form(action = "/test/post", method = "POST", enctype="multipart/form-data")
+    div
+        labed 제목
+        input(type = "text", name = "title")
+    div
+        labed 저자
+        input(type = "text", name = "author")
+    div
+        labed 내용
+        input(type = "text", name = "content")
+    div 
+        labed 구매 링크
+        input(type = "text", name = "test_buy_path")
+    div
+        label
+        input(type="file" name="test_img")
+    div 
+        button.submit 제출

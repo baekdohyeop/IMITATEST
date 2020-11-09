@@ -1,0 +1,150 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(href='/assets/img/apple-icon.png', rel='apple-touch-icon', sizes='76x76')
+    link(type='image/png', href='/assets/img/favicon.png', rel='icon')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+      | IMITATEST | PROBLEM | #{context.problem.title}
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no')
+    // Fonts and icons
+    link(type='text/css', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons', rel='stylesheet')
+    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/stylesheets/submitanswer.css', rel='stylesheet')
+    link(href='/stylesheets/submitdifficulty.css', rel='stylesheet')
+    // CSS Files
+    link(href='/assets/css/material-kit.css?v=2.0.5', rel='stylesheet')
+    script.
+      var problem_id = !{JSON.stringify(context.problem._id)};
+  body.index-page
+    nav#sectionsNav.navbar.navbar-transparent.navbar-color-on-scroll.fixed-top.navbar-expand-lg(color-on-scroll='100')
+      .container
+        .navbar-translate
+          a.navbar-brand(href='/')
+            strong IMITATEST
+          button.navbar-toggler(data-toggle='collapse', type='button', aria-expanded='false', aria-label='Toggle navigation')
+            span.sr-only Toggle navigation
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+        .collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href='/problem')
+                | PROBLEM
+            li.nav-item
+              a.nav-link(href='/test')
+                | TEST
+            li.nav-item
+              a.nav-link(href='/rank')
+                | RANKING
+            li.nav-item
+              a.nav-link(href='/curriculum')
+                | CURRICULUM
+            if context.login
+              li.nav-item
+                a.nav-link(href='/profile')
+                  | PROFILE
+              li.nav-item
+                a.nav-link(href='/logout')
+                  | LOGOUT
+            else
+              li.nav-item
+                a.nav-link(href='/login')
+                  | LOGIN
+    .page-header.header-filter(data-parallax='true', style="background-image: url('/assets/img/problem_page_library.jpg'); height:300px;")
+      .container
+        .row
+          .col-md-8.ml-auto.mr-auto
+            .brand
+              h1(style='font-size:50px;') PROBLEM
+    .main.main-raised
+      .section
+        .container
+            .row.justify-content-center
+              h2(style="margin-top:-40px; margin-bottom:20px;") #{context.problem.title} [#{context.problem.subject}]
+            .row.justify-content-center
+              .col-md-10
+                .progress.progress-line-info
+                  .progress-bar.progress-bar-info(role='progressbar', aria-valuemax='10', aria-valuemin='0', aria-valuenow='#{context.problem.difficulty}', style='width: #{context.problem.difficulty*10}%;')
+            .row.justify-content-center
+              .col-md-5(style="text-align:right;")
+                img(src="#{context.problem.problem_img_path}" width="98%")
+              .col-md-5
+                .blockquote.undefined(style="height:100%; margin-left:-5px;")
+                  .media(style="margin-top:-15px;")
+                    .media-body
+                      h4.media-heading
+                        | #{context.problem.author.name}
+                        span(style="font-size:12px;") · 2 Days Ago
+                      span(style="font-size:16px;")
+                        | #{context.problem.content}
+                      .media-footer
+                        a.btn.btn-primary.btn-link.float-right(href='#pablo', rel='tooltip', title='', data-original-title='Clcik to Copy URL', aria-describedby='tooltip803023')
+                          i.material-icons share
+                          |  share
+                        a.btn.btn-danger.btn-link.float-right(href='/problem/#{context.problem._id}/like')
+                          if context.alreadylike
+                            i.material-icons favorite
+                            |  #{context.problem.like_count}
+                          else
+                            i.material-icons favorite_border
+                            |  #{context.problem.like_count}
+            .row.justify-content-center
+              .col-md-10
+                if context.alreadysolve && !context.alreadyevaluate
+                  #sliderRegular.slider.slider-info.noUi-target.noUi-ltr.noUi-horizontal
+                else
+                  .progress.progress-line(style="margin-top:15px;") 
+            
+            if context.alreadysolve && !context.alreadyevaluate
+              .row.justify-content-center(style="margin-top:20px; margin-bottom:-25px;")
+                .cta2
+                  span(style="font-size:15px;") How difficult was it?
+            else if context.alreadyevaluate
+              .row.justify-content-center(style="margin-top:20px; margin-bottom:-25px;")
+                .cta3
+                  span(style="font-size:15px;") Solved
+            else
+              .row.justify-content-center(style="margin-top:20px; margin-bottom:-25px;")
+                .cta
+                  span Input Answer
+                  form
+                    .input
+                      input(placeholder='Your Answer' name = "answer" id = "answer")
+                    .button
+                      button(disabled='disabled', type='button' id="answer_submit") Submit
+            
+
+                 
+    footer.footer(data-background-color='black')
+      .container
+        nav.float-left
+          ul
+            li
+              a(href='/')
+                | IMITATEST
+        .copyright.float-right
+          | © IMITATEST
+          script.
+            document.write(new Date().getFullYear())
+          |  All Right Reserved
+    // Core JS Files
+    script(src='/assets/js/core/jquery.min.js', type='text/javascript')
+    script(src='/assets/js/core/popper.min.js', type='text/javascript')
+    script(src='/javascripts/submitanswer.js', type='text/javascript')
+    script(src='/javascripts/submitdifficulty.js', type='text/javascript')
+    script(src='/assets/js/core/bootstrap-material-design.min.js', type='text/javascript')
+    script(src='/assets/js/plugins/moment.min.js')
+    // Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker
+    script(src='/assets/js/plugins/bootstrap-datetimepicker.js', type='text/javascript')
+    // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
+    script(src='/assets/js/plugins/nouislider.min.js', type='text/javascript')
+    // Control Center for Material Kit: parallax effects, scripts for the example pages etc
+    script(src='/assets/js/material-kit.js?v=2.0.5', type='text/javascript')
+    script.
+      $(document).ready(function() {
+        var e=document.getElementById("sliderRegular");noUiSlider.create(e,{start:40,connect:[!0,!1],range:{min:0,max:100}});
+      });
+    

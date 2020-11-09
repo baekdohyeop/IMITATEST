@@ -1,0 +1,180 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto");
+
+::-webkit-input-placeholder {
+  color:#00bcd4;
+}
+
+.cta {
+  background: #fff;
+  font-weight: bold;
+  border-radius: 25px;
+  border: 1px solid #00bcd4;
+  line-height: 50px;
+  height: 50px;
+  width: 170px;
+  text-align: center;
+  transition: width .2s ease-in-out;
+  cursor: pointer;
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+}
+
+.cta2 {
+    background: #fff;
+    font-weight: bold;
+    border-radius: 25px;
+    border: 1px solid #4caf50;
+    line-height: 50px;
+    height: 50px;
+    width: 170px;
+    text-align: center;
+    transition: width .2s ease-in-out;
+    cursor: pointer;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+  }
+
+  .cta3 {
+    background: #fff;
+    font-weight: bold;
+    border-radius: 25px;
+    border: 1px solid #4caf50;
+    line-height: 50px;
+    height: 50px;
+    width: 170px;
+    text-align: center;
+    transition: width .2s ease-in-out;
+    cursor: pointer;
+    font-family: "Roboto", sans-serif;
+    font-size: 18px;
+  }
+
+.cta .hide {
+  display: none;
+}
+.cta form {
+  display: flex;
+}
+
+.cta span {
+  opacity: 0;
+  width: 100%;
+  color: #00bcd4;
+  text-align: center;
+  -webkit-animation: fadeIn .3s ease-in-out;
+          animation: fadeIn .3s ease-in-out;
+  -webkit-animation-delay: .2s;
+          animation-delay: .2s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+.cta2 span {
+    opacity: 0;
+    width: 100%;
+    color: #4caf50;
+    text-align: center;
+    -webkit-animation: fadeIn .3s ease-in-out;
+            animation: fadeIn .3s ease-in-out;
+    -webkit-animation-delay: .2s;
+            animation-delay: .2s;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+  }
+
+  .cta3 span {
+    opacity: 0;
+    width: 100%;
+    color: #4caf50;
+    text-align: center;
+    -webkit-animation: fadeIn .3s ease-in-out;
+            animation: fadeIn .3s ease-in-out;
+    -webkit-animation-delay: .2s;
+            animation-delay: .2s;
+    -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+  }
+
+.cta .input {
+  display: none;
+  opacity: 0;
+  flex: 3;
+  text-align: left;
+}
+.cta .input input {
+  border: 0;
+  width: 240px;
+  height: 45px;
+  margin: 0 0 0 25px;
+  outline: none;
+  color: #00bcd4;
+}
+.cta .button {
+  display: none;
+  opacity: 0;
+  flex: 1;
+  text-align: center;
+}
+.cta .button button {
+  outline: none;
+  float: right;
+  padding: 0 15px;
+  height: 49px;
+  background: #00bcd4;
+  border-radius: 25px;
+  color:white;
+  border: 0;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+.cta .button button:disabled {
+  color: gainsboro;
+  opacity: .8;
+}
+.cta.sent {
+  cursor: default;
+}
+.cta.active {
+  width: 350px;
+  text-align: left;
+  transition: width .2s ease-in-out;
+  cursor: default;
+}
+.cta.active span {
+  display: none;
+}
+.cta.active .input, .cta.active .button {
+  display: block;
+  -webkit-animation: fadeIn .3s ease-in-out;
+          animation: fadeIn .3s ease-in-out;
+  -webkit-animation-delay: .1s;
+          animation-delay: .1s;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.7);
+            transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}

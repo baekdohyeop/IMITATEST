@@ -1,0 +1,30 @@
+form(action="/problem/post" method="post" enctype="multipart/form-data")
+    div
+        label 제목
+        input(type="text" name="title")
+    div
+        label 내용
+        input(type="text" name="content")
+    div
+        label 과목
+        input(type="text" name="subject")
+    div
+        label
+        input(type="file" name="problem_img")
+    div
+        label 단원
+        input(type="text" name="unit")
+    div
+        label 점수
+        input(type="text" name="point")
+    div
+        label 번호
+        input(type="text" name="number")
+    div
+        label 난도
+        input(type="text" name="difficulty")
+    div 
+        label 정답
+        input(type="text" name="answer")
+    div
+        button.submit 제출

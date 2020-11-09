@@ -1,0 +1,170 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(href='/assets/img/apple-icon.png', rel='apple-touch-icon', sizes='76x76')
+    link(type='image/png', href='/assets/img/favicon.png', rel='icon')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+      | IMITATEST | TEST | #{context.test.title}
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no')
+    // Fonts and icons
+    link(type='text/css', href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons', rel='stylesheet')
+    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/stylesheets/submitanswer.css', rel='stylesheet')
+    link(href='/stylesheets/submitdifficulty.css', rel='stylesheet')
+    // CSS Files
+    link(href='/assets/css/material-kit.css?v=2.0.5', rel='stylesheet')
+    script.
+      var test_id = !{JSON.stringify(context.test._id)};
+  body.index-page
+    nav#sectionsNav.navbar.navbar-transparent.navbar-color-on-scroll.fixed-top.navbar-expand-lg(color-on-scroll='100')
+      .container
+        .navbar-translate
+          a.navbar-brand(href='/')
+            strong IMITATEST
+          button.navbar-toggler(data-toggle='collapse', type='button', aria-expanded='false', aria-label='Toggle navigation')
+            span.sr-only Toggle navigation
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+            span.navbar-toggler-icon
+        .collapse.navbar-collapse
+          ul.navbar-nav.ml-auto
+            li.nav-item
+              a.nav-link(href='/problem')
+                | PROBLEM
+            li.nav-item
+              a.nav-link(href='/test')
+                | TEST
+            li.nav-item
+              a.nav-link(href='/rank')
+                | RANKING
+            li.nav-item
+              a.nav-link(href='/curriculum')
+                | CURRICULUM
+            if context.login
+              li.nav-item
+                a.nav-link(href='/profile')
+                  | PROFILE
+              li.nav-item
+                a.nav-link(href='/logout')
+                  | LOGOUT
+            else
+              li.nav-item
+                a.nav-link(href='/login')
+                  | LOGIN
+    .page-header.header-filter(data-parallax='true', style="background-image: url('/assets/img/problem_page_library.jpg'); height:300px;")
+      .container
+        .row
+          .col-md-8.ml-auto.mr-auto
+            .brand
+              h1(style='font-size:50px;') TEST
+    .main.main-raised
+      .section
+        .container
+            .row.justify-content-center
+              h2(style="margin-top:-40px; margin-bottom:20px;") #{context.test.title}
+            .row.justify-content-center
+              .col-md-10
+                .progress.progress-line-info
+                  .progress-bar.progress-bar-info(role='progressbar', aria-valuemax='10', aria-valuemin='0', aria-valuenow='#{((context.test.difficulty.calculus+context.test.difficulty.calculus+context.test.difficulty.calculus)/3).toFixed(2)}', style='width: #{((context.test.difficulty.calculus+context.test.difficulty.calculus+context.test.difficulty.calculus)/3).toFixed(2)*10}%;')
+            .row.justify-content-center
+              .col-md-5(style="text-align:right;")
+                if context.test.test_img_path
+                  img(src="#{context.test.test_img_path}" style="max-width:80%")
+                else
+                  img(src='/assets/img/mockexam.jpg')
+              .col-md-5
+                .blockquote.undefined(style="height:100%; margin-left:-5px;")
+                  .media(style="margin-top:-15px;")
+                    .media-body
+                      h4.media-heading
+                        | #{context.test.author}
+                        span(style="font-size:12px;") · 2 Days Ago
+                      span(style="font-size:16px;")
+                        | #{context.test.content}
+                      .media-footer
+                        a.btn.btn-primary.btn-link.float-right(href='#{context.test.test_buy_path}', rel='tooltip', title='', data-original-title='Clcik to Buy', aria-describedby='tooltip803023')
+                          i.material-icons local_grocery_store
+                          |  Buy
+                        a.btn.btn-danger.btn-link.float-right(href='/test/#{context.test._id}/like')
+                          if context.alreadylike
+                            i.material-icons favorite
+                            |  #{context.test.like_count}
+                          else
+                            i.material-icons favorite_border
+                            |  #{context.test.like_count}
+            if !context.alreadyevaluate
+              .row.justify-content-center
+                .col-md-10
+                  .media.media-post
+                    .media-body
+                      form(method="POST" action="/test/#{context.test._id}/addreview")
+                        #sliderRegular.slider.slider-info.noUi-target.noUi-ltr.noUi-horizontal
+                        span.bmd-form-group.has-info
+                          textarea.form-control(placeholder='Evaluate difficulty and Comment', rows='5', name = 'content' id="difficulty_content")
+                        .media-footer
+                          button.btn.btn-info.btn-wd.float-right(type='button' id="difficulty_submit") Post Comment
+            else
+              .row.justify-content-center
+                .col-md-10
+                  .progress.progress-line-info(style="margin-top:15px;")
+                    .progress-bar.progress-bar-info(role='progressbar', aria-valuemax='10', aria-valuemin='0', aria-valuenow='#{((context.test.reviews[context.alreadyevaluate-1].difficulty.calculus+context.test.reviews[context.alreadyevaluate-1].difficulty.geometry_and_vector+context.test.reviews[context.alreadyevaluate-1].difficulty.probability_and_statistic)/3).toFixed(2)}', style='width: #{((context.test.reviews[context.alreadyevaluate-1].difficulty.calculus+context.test.reviews[context.alreadyevaluate-1].difficulty.geometry_and_vector+context.test.reviews[context.alreadyevaluate-1].difficulty.probability_and_statistic)/3).toFixed(2)*10}%;')
+                  if context.test.reviews[context.alreadyevaluate-1].content
+                    p(style="line-height:35px;") #{context.test.reviews[context.alreadyevaluate-1].content}
+                  else
+                    p(style="line-height:35px;") 내용 없음
+            .row.justify-content-center
+                button.btn.btn-info.btn-round(style='margin:40px; margin-bottom:40px' type = "button" onclick="location.href='/test/#{context.test._id}/like'")
+                  if context.alreadylike
+                    i.material-icons favorite&nbsp;
+                    | #{context.test.like_count}
+                  else
+                    i.material-icons favorite_border&nbsp;
+                    | #{context.test.like_count}
+            .row.justify-content-center
+              .col-md-10
+                -for(var i = 0; i < context.test.reviews.length; i++){
+                  -if(i == context.alreadyevaluate-1) continue;
+                  .media
+                  .media-body
+                    h4.media-heading
+                      | #{context.test.reviews[i].writer.name}
+                      small · 1 Days Ago
+                    .progress.progress-line-info
+                      .progress-bar.progress-bar-info(role='progressbar', aria-valuemax='10', aria-valuemin='0', aria-valuenow='#{((context.test.reviews[i].difficulty.calculus+context.test.reviews[i].difficulty.geometry_and_vector+context.test.reviews[i].difficulty.probability_and_statistic)/3).toFixed(2)}', style='width: #{((context.test.reviews[i].difficulty.calculus+context.test.reviews[i].difficulty.geometry_and_vector+context.test.reviews[i].difficulty.probability_and_statistic)/3).toFixed(2)*10}%;')
+                    if context.test.reviews[i].content
+                      p(style="line-height:35px;") #{context.test.reviews[i].content}
+                    else
+                      p(style="line-height:35px;") 내용 없음
+                -}  
+    footer.footer(data-background-color='black')
+      .container
+        nav.float-left
+          ul
+            li
+              a(href='/')
+                | IMITATEST
+        .copyright.float-right
+          | © IMITATEST
+          script.
+            document.write(new Date().getFullYear())
+          |  All Right Reserved
+    // Core JS Files
+    script(src='/assets/js/core/jquery.min.js', type='text/javascript')
+    script(src='/assets/js/core/popper.min.js', type='text/javascript')
+    script(src='/javascripts/submitanswer.js', type='text/javascript')
+    script(src='/javascripts/submitdifficulty.js', type='text/javascript')
+    script(src='/assets/js/core/bootstrap-material-design.min.js', type='text/javascript')
+    script(src='/assets/js/plugins/moment.min.js')
+    // Plugin for the Datepicker, full documentation here: https://github.com/Eonasdan/bootstrap-datetimepicker
+    script(src='/assets/js/plugins/bootstrap-datetimepicker.js', type='text/javascript')
+    // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
+    script(src='/assets/js/plugins/nouislider.min.js', type='text/javascript')
+    // Control Center for Material Kit: parallax effects, scripts for the example pages etc
+    script(src='/assets/js/material-kit.js?v=2.0.5', type='text/javascript')
+    script.
+      $(document).ready(function() {
+        var e=document.getElementById("sliderRegular");noUiSlider.create(e,{start:40,connect:[!0,!1],range:{min:0,max:100}});
+      });
+    
